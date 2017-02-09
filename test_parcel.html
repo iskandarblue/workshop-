@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8' />
+    <title></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.27.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.27.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        #features {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 300px;
+            overflow: auto;
+            background: rgba(255, 255, 255, 0.8);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id='map'></div>
+    <pre id='features'></pre>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoibGVpc2Fua2F6YmVyb3ZhIiwiYSI6IjQyZjdjODRlYmI0MjE0ZmU4NTM1NDJlYzgwOTE0MzI3In0.N6FQIprzEKphhtdDPaLfSg';
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/dark-v9',
+            center: [-96.80011, 32.7817035],
+            zoom: 14.5
+        });
+
+        map.addControl(new mapboxgl.NavigationControl());
+
+        map.on('load', function() {
+            map.addSource('parcel11', {
+                type: 'vector',
+                tiles: ['http://localhost:3000/parcel11/{z}/{x}/{y}.mvt'],
+                "minzoom": 0,
+                "maxzoom": 22
+            });
+            map.addLayer({
+                "id": "polygons",
+                "type": "fill",
+                "source": "parcel11",
+                "source-layer": "pol",
+                "paint": {
+                    "fill-color": "#3887be"
+                }
+            });
+        });
+
+        map.on('mousemove', function(e) {
+            var features = map.queryRenderedFeatures(e.point, {
+                layers: ['polygons']
+            });
+            if (features && features.length > 0) features = features.map(f => f.properties);
+            document.getElementById('features').innerHTML = JSON.stringify(features, null, 2);
+        });
+    </script>
+
+</body>
+
+</html>
