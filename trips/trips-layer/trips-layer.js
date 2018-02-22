@@ -1,4 +1,4 @@
-import {Layer} from 'deck.gl';
+import {PathLayer} from 'deck.gl';
 
 import {Model, Geometry} from 'luma.gl';
 
@@ -10,10 +10,10 @@ const defaultProps = {
   currentTime: 0,
   getPath: d => d.path,
   getColor: d => d.color,
-  getWidth: d => d.width
+  getWidth: d => 100
 };
 
-export default class TripsLayer extends Layer {
+export default class TripsLayer extends PathLayer {
   initializeState() {
     const {gl} = this.context;
     const attributeManager = this.getAttributeManager();

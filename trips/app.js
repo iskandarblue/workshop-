@@ -59,7 +59,7 @@ class Root extends Component {
 
   _animate() {
     const currentTime = this.state.time || 0;
-    const maxTime = 64800;
+    const maxTime =  64800;
     const loopTime = 90;
     const fps = 24;
     const step = Math.ceil((maxTime / loopTime) / fps); // 42
@@ -75,7 +75,7 @@ class Root extends Component {
     if (time > maxTime) {
       time = 0;
     }
-    var displayTime = moment().hour(0).minute(0).seconds(time);
+    var displayTime = moment().hour(6).minute(0).seconds(time);
     console.log(displayTime);
 
     this.setState({
@@ -85,7 +85,6 @@ class Root extends Component {
     });
     this._animationFrame = window.requestAnimationFrame(this._animate.bind(this));
   }
-
 
   _resize() {
     this._onViewportChange({
@@ -104,6 +103,17 @@ class Root extends Component {
     const {viewport, buildings, trips, time} = this.state;
 
     return (
+       <div>
+       <div
+        style={{
+          position: 'absolute',
+          top: '100px',
+          width: '100%',
+          textAlign: 'center',
+          fontFamily: 'Verdana, Geneva, sans-serif',
+          color: '#ccc',
+          zIndex: 1
+        }}>{ this.state.displayTime } PST</div>
       <MapGL
         {...viewport}
         mapStyle="mapbox://styles/iskandarblue/cjdy1weid7js02spi6eb47pfs"
@@ -118,6 +128,7 @@ class Root extends Component {
           time={time}
         />
       </MapGL>
+      </div>
     );
   }
 }
