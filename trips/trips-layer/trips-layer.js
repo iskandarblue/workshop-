@@ -9,7 +9,8 @@ const defaultProps = {
   trailLength: 120,
   currentTime: 0,
   getPath: d => d.path,
-  getColor: d => d.color
+  getColor: d => d.color,
+  getWidth: d => d.width
 };
 
 export default class TripsLayer extends Layer {

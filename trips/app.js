@@ -14,7 +14,7 @@ const DATA_URL = {
   BUILDINGS:
     'https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/trips/buildings.json', // eslint-disable-line
   TRIPS:
-    'https://cdn.rawgit.com/iskandari/workshop-/368c5275/best.json' // eslint-disable-line
+    'https://cdn.rawgit.com/iskandari/workshop-/0e42c300/best.json' // eslint-disable-line
 };
 
 class Root extends Component {
@@ -67,7 +67,6 @@ class Root extends Component {
     const viewport = this.state.viewport;
     var self = this;
 
-    console.log('Current Bearing ', viewport.bearing);
     viewport.bearing = this.state.viewport.bearing + .05;
     viewport.width = window.innerWidth;
     viewport.height = window.innerHeight;
@@ -77,6 +76,7 @@ class Root extends Component {
       time = 0;
     }
     var displayTime = moment().hour(0).minute(0).seconds(time);
+    console.log(displayTime);
 
     this.setState({
       time: time,
