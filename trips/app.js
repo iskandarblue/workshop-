@@ -5,6 +5,8 @@ import MapGL from 'react-map-gl';
 import DeckGLOverlay from './deckgl-overlay.js';
 import moment from 'moment';
 import {json as requestJson} from 'd3-request';
+//import svgSource from './JUMP_logo.svg';
+//import InlineSVG from 'svg-inline-react'; 
 
 // Set your mapbox token here
 const MAPBOX_TOKEN = "pk.eyJ1IjoiaXNrYW5kYXJibHVlIiwiYSI6ImNpazE3MTJldjAzYzZ1Nm0wdXZnMGU2MGMifQ.i3E1_b9QXJS8xXuPy3OTcg"; // eslint-disable-line
@@ -28,6 +30,7 @@ class Root extends Component {
       },
       buildings: null,
       trips: null,
+      numTrips: 0,
       time: 0,
       displayTime: '06:00:00'
     };
@@ -41,6 +44,7 @@ class Root extends Component {
     requestJson(DATA_URL.TRIPS, (error, response) => {
       if (!error) {
         this.setState({trips: response});
+        this._animate();
       }
     });
   }
@@ -48,7 +52,6 @@ class Root extends Component {
   componentDidMount() {
     window.addEventListener('resize', this._resize.bind(this));
     this._resize();
-    this._animate();
   }
 
   componentWillUnmount() {
@@ -67,6 +70,11 @@ class Root extends Component {
     const viewport = this.state.viewport;
     var self = this;
 
+    const numTrips = this.state.trips.filter(item => {
+      return item.segments.filter(segment => {
+        return segment[2] < currentTime;
+      }).length > 0
+    }).length;
     viewport.bearing = this.state.viewport.bearing + .05;
     viewport.width = window.innerWidth;
     viewport.height = window.innerHeight;
@@ -81,7 +89,8 @@ class Root extends Component {
     this.setState({
       time: time,
       displayTime: displayTime.format("H:mm:ss"),
-      viewport: viewport
+      viewport: viewport,
+      numTrips: numTrips
     });
     this._animationFrame = window.requestAnimationFrame(this._animate.bind(this));
   }
@@ -100,20 +109,26 @@ class Root extends Component {
   }
 
   render() {
-    const {viewport, buildings, trips, time} = this.state;
+    const {viewport, buildings, trips, time, numTrips} = this.state;
 
     return (
        <div>
+       <img className='logo' src='https://jumpbikes.com/assets/images/jump/JUMP_logo.svg' />
        <div
         style={{
-          position: 'absolute',
-          top: '100px',
-          width: '100%',
-          textAlign: 'center',
-          fontFamily: 'Verdana, Geneva, sans-serif',
+          position: 'fixed',
+          top: '90%',
+          width: '200px',
           color: '#ccc',
+          backgroundColor: '#000',
+          textAlign: 'center',
+          fontFamily: 'Open Sans',
+          fontSize: '18px',
+          fontWeight: '600',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
           zIndex: 1
-        }}>{ this.state.displayTime } PST</div>
+        }}>&nbsp;&nbsp;&nbsp;&nbsp;Trip count: {numTrips}&nbsp;&nbsp;&nbsp;&nbsp; February 28 { this.state.displayTime }</div>
       <MapGL
         {...viewport}
         mapStyle="mapbox://styles/iskandarblue/cjdy1weid7js02spi6eb47pfs"
@@ -124,7 +139,7 @@ class Root extends Component {
           viewport={viewport}
           buildings={buildings}
           trips={trips}
-          trailLength={540}
+          trailLength={810}
           time={time}
         />
       </MapGL>
