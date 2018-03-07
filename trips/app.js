@@ -128,7 +128,7 @@ class Root extends Component {
           left: '50%',
           transform: 'translate(-50%, -50%)',
           zIndex: 1
-        }}>&nbsp;&nbsp;&nbsp;&nbsp;Trip count: {numTrips}&nbsp;&nbsp;&nbsp;&nbsp; February 28 { this.state.displayTime }</div>
+        }}>&nbsp;&nbsp;&nbsp;&nbsp;Trip count: {numTrips}&nbsp;&nbsp;&nbsp;&nbsp; February 27 { this.state.displayTime }</div>
       <MapGL
         {...viewport}
         mapStyle="mapbox://styles/iskandarblue/cjdy1weid7js02spi6eb47pfs"
