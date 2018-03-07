@@ -111,8 +111,47 @@ class Root extends Component {
   render() {
     const {viewport, buildings, trips, time, numTrips} = this.state;
 
+           var opacity = 0;
+    if (time < 5250 && time > 4200) {
+      opacity = (5250 - time) / 1050;
+    }
+    else if (time < 5250) {
+      opacity = 1;
+    }
+
+
     return (
        <div>
+          <div
+          style={{
+            background: 'rgba(0, 0, 0, 0.93)',
+            width: '100%',
+            height: '100%',
+            position: 'absolute',
+            textAlign: 'center',
+            verticalAlign: 'middle',
+            opacity: opacity,
+            color: '#fff',
+            zIndex: 100000000,
+            fontFamily: 'Verdana, Geneva, sans-serif',
+            fontSize: "36px",
+            display: this.state.loaded ? 'none' : ''
+          }}></div>
+          <div
+        style={{
+        top: '35%',
+        width: '100%',
+        position: 'absolute',
+        textAlign: 'center',
+        opacity: opacity,
+        display: 'inline-block',
+        color: "#fff",
+        zIndex: 100000000,
+        fontFamily: 'Verdana, Geneva, sans-serif',
+        fontSize: "36px",
+        verticalAlign: 'middle',
+        display: this.state.loaded ? 'none' : ''
+        }}>JUMP San Francisco</div>
        <img className='logo' src='https://jumpbikes.com/assets/images/jump/JUMP_logo.svg' />
        <div
         style={{
